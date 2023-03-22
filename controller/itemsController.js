@@ -63,7 +63,7 @@ exports.addItem = async (req, res) => {
 // TODO #1.3: Delete an item from DynamDB
 exports.deleteItem = async (req, res) => {
   const item_id = req.params.item_id;
-
+  await docClient.send(new DeleteCommand(item_id));
 
   // You should change the response below.
   res.send("This route should delete an item in DynamoDB with item_id.");
