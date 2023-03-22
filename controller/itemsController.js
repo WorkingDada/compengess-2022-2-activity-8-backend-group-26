@@ -42,14 +42,20 @@ exports.getItems = async (req, res) => {
 exports.addItem = async (req, res) => {
   const item_id = uuidv4();
   const created_date = Date.now();
-  const item = { 
+  const items = {
     item_id: item_id, 
     item_name: req.body.item,
     name: req.body.name,
     price: req.body.price,
     created_date: created_date 
   };
-
+  try {
+    const data = await docClient.send(new PutCommand(items));
+    res.send(data.Items);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
   // You should change the response below.
   res.send("This route should add an item in DynamoDB.");
 };
@@ -57,6 +63,7 @@ exports.addItem = async (req, res) => {
 // TODO #1.3: Delete an item from DynamDB
 exports.deleteItem = async (req, res) => {
   const item_id = req.params.item_id;
+
 
   // You should change the response below.
   res.send("This route should delete an item in DynamoDB with item_id.");
