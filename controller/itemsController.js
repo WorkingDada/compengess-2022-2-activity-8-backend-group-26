@@ -42,16 +42,10 @@ exports.getItems = async (req, res) => {
 exports.addItem = async (req, res) => {
   const item_id = uuidv4();
   const created_date = Date.now();
-  const items = {
-    item_id: item_id, 
-    item_name: req.body.item,
-    name: req.body.name,
-    price: req.body.price,
-    created_date: created_date 
-  };
+  const items = { item_id: item_id, ...req.body, created_date: created_date };
   try {
     const data = await docClient.send(new PutCommand(items));
-    res.send(data.items);
+    res.send(data.item_name);
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
